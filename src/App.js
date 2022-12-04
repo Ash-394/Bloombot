@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import { WagmiConfig, createClient } from "wagmi";
+import { ConnectKitProvider, ConnectKitButton, getDefaultClient } 
+from "connectkit";
+import { ChakraProvider } from "@chakra-ui/react";
+import { Chat } from "@pushprotocol/uiweb";
+import {useAccount} from "wagmi"
 
-function App() {
+const client = createClient(
+  getDefaultClient({
+    appName: "Your App Name",
+  
+  }),
+);
+
+const App = () => {
+  const { address }= useAccount()
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <WagmiConfig client={client}>
+      
+      <ChakraProvider>
+      <ConnectKitProvider>
+        <ConnectKitButton />
+        <Chat
+   account={address} //user address
+   supportAddress="0xC6D37dE061d9728F5988f9aC559aE86E32a4b611" //support address
+   apiKey="jVPMCRom1B.iDRMswdehJG7NpHDiECIHwYMMv6k2KzkPJscFIDyW8TtSnk4blYnGa8DIkfuacU0"
+    env="staging"
+ />
+      </ConnectKitProvider>
+      </ChakraProvider>
+    </WagmiConfig>
   );
-}
-
+};
 export default App;
